@@ -14,20 +14,16 @@ public class DataProducer {
 
     public static void main(String[] args){
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("localhost");
         ReaderService readerService = new ReaderService();
 
         try {
             Connection connection = connectionFactory.newConnection();
             Channel channel = connection.createChannel();
             channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             do {
                 byte[] data = readerService.readClient();
-                System.out.println(data.length);
-                // публикую в exchange
-                channel.basicPublish(EXCHANGE_NAME, "",null, data);
+                channel.basicPublish(EXCHANGE_NAME, "", null, data);
             } while ((reader.readLine()) != null);
         } catch (IOException | TimeoutException e) {
             throw new IllegalArgumentException(e);

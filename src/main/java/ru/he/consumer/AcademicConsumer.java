@@ -17,7 +17,6 @@ public class AcademicConsumer {
     public static void main(String[] args) {
         PdfService pdfService = new PdfService();
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("localhost");
 
         try {
             Connection connection = connectionFactory.newConnection();

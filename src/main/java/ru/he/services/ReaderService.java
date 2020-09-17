@@ -16,6 +16,8 @@ public class ReaderService {
         try {
             Client client = new Client();
 
+            System.out.println("=========================================");
+
             System.out.print("First name: ");
             client.setName(reader.readLine());
 
@@ -30,6 +32,10 @@ public class ReaderService {
 
             System.out.print("Age: ");
             client.setAge(reader.readLine());
+
+            System.out.println("===========================================");
+
+            System.out.println(client.toString());
 
             return SerializationUtils.serialize(client);
         } catch (IOException e) {

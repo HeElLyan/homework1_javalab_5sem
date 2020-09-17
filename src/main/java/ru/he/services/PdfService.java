@@ -14,11 +14,13 @@ import ru.he.enums.PdfType;
 import ru.he.models.Client;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PdfService {
-    private static final String DEST = "/Users/heel/IdeaProjects/3Course/javalab/homework/homework1_pec_documents/";
+    private static final String DEST = "/Users/heel/IdeaProjects/3Course/javalab/homework/homework1_pec_documents/pdf/";
 
     public void createPdf(byte[] data, PdfType pdfType) throws IOException {
         switch (pdfType) {
@@ -31,43 +33,28 @@ public class PdfService {
         }
     }
 
-//    private String createDirectories(Client client) throws IOException {
-//        String destDirectory = DEST + client.getId().toString();
-//        Files.createDirectories(Paths.get(destDirectory));
-//        return destDirectory;
-//    }
-
-//    private PdfFont getEnglishFont() {
-//        try {
-//            return PdfFontFactory.createFont(
-//                    "src/main/resources/FreeSans.ttf",
-//                    "CP1251", true);
-//        } catch (IOException e) {
-//            throw new IllegalStateException(e);
-//        }
-//    }
-
-    private Document createTemplateForPdf(byte[] data) throws IOException {
+    private Document createTemplateForPdf(byte[] data, PdfType pdfType) throws IOException {
         Client client = SerializationUtils.deserialize(data);
 
-        String fileDest = DEST + client.getId().toString() + "/" + PdfType.ACADEMIC_VACATION.name() + ".pdf";
+        String fileDest = DEST + client.getId().toString() + "/";
+        Files.createDirectories(Paths.get(fileDest));
+        fileDest+=pdfType.name() + ".pdf";
+
         PdfDocument pdf = new PdfDocument(new PdfWriter(fileDest));
 
         Document document = new Document(pdf, PageSize.A4, true);
 
-        PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
-        document.setFont(font);
+//        PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
 
         Paragraph paragraph1 = new Paragraph("EXCLUSION")
                 .setTextAlignment(TextAlignment.CENTER)
                 .setFontSize(20)
                 .setBold();
 
-        document.add(paragraph1);
-        return document;
+        return document.add(paragraph1);
     }
     private void createAcademicPdf(byte[] data) throws IOException {
-        Document document = createTemplateForPdf(data);
+        Document document = createTemplateForPdf(data, PdfType.ACADEMIC_VACATION);
         Client client = SerializationUtils.deserialize(data);
 
         String text = "I," + client.getName() + " " + client.getLastName() + ", want to take an academic year," +
@@ -82,7 +69,7 @@ public class PdfService {
     }
 
     private void createExclusionPdf(byte[] data) throws IOException {
-        Document document = createTemplateForPdf(data);
+        Document document = createTemplateForPdf(data, PdfType.EXCLUSION);
         Client client = SerializationUtils.deserialize(data);
 
         String text = "I," + client.getName() + " " + client.getLastName() + ", want to fulfill my dreams before I die!" +

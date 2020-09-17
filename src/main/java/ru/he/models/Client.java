@@ -22,4 +22,16 @@ public class Client implements Serializable {
     private String passportNumber;
     private String passportDate;
     private String age;
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", passportNumber='" + passportNumber + '\'' +
+                ", passportDate='" + passportDate + '\'' +
+                ", age='" + age + '\'' +
+                '}';
+    }
 }
